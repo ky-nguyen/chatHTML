@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+     body {
+        background-color: #f2f2f2;
+    }
+     .chat-container {
+        width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+    }
+     .chat-box {
+        padding: 10px 10px;
+    }
+     .btn-send {
+        float: right;
+        background-color: #4CAF50;
+        color: #fff;
+    }
+</style>
+<body>
+      <!-- Container -->
+      <div class="chat-container">
+        <!-- Chat window -->
+        <div class="chat-box" id="chat-box">
+        </div>
+        <!-- Send message textbox -->
+        <input type="text" name="message" placeholder="Nhập tin nhắn tại đây..."/>
+        <!-- Send message button -->
+        <button class="btn-send" onclick="sendMessage()">Gửi</button>
+    </div>
+
+    <script>
+        // Get the chat-box element
+        let chatBox = document.getElementById('chat-box');
+         // Function to send messages
+        function sendMessage() {
+            // Get message from input field
+            let message = document.querySelector('input[name="message"]').value;
+             // Create div element for message
+            let div = document.createElement('div');
+            // insert message
+            div.innerHTML = message;
+            // Append message to chat-box
+            chatBox.appendChild(div);
+             // Clear input field
+            document.querySelector('input[name="message"]').value = '';
+        }
+         //Function to delete message
+        function deleteMessage() {
+            // Select all elements with class="chat-box"
+            let messages = document.querySelectorAll('.chat-box > div');
+            // Iterate over all elements and remove
+            for (let i = 0; i < messages.length; i++) {
+              let message = messages[i];
+              message.parentNode.removeChild(message);
+            }
+        }
+         // Function to save messages
+        function saveMessages() {
+           // Get messages 
+          let messages = document.querySelectorAll('.chat-box > div');
+          // Get messages array
+          let messagesArray = Array.from(messages);
+          // Convert messages array to string
+          let messagesString = JSON.stringify(messagesArray);
+          // Store messages in localStorage
+          localStorage.setItem('messages', messagesString);
+        }
+         // Function to load messages
+        function loadMessages() {
+          // Retrieve messages string from localStorage
+          let messagesString = localStorage.getItem('messages');
+          // Convert messages string to array
+          let messagesArray = JSON.parse(messagesString);
+          //Append messages to the chat-box
+          messagesArray.forEach(message => {
+            let div = document.createElement('div');
+            div.innerHTML = message;
+            chatBox.appendChild(div);
+          });
+        }
+    </script>
+</body>
+</html>
